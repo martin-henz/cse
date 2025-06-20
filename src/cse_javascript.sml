@@ -219,7 +219,7 @@ val res2 = evaluate test2
 val test3 = APP (VAR "+", [NUM 4.0, NUM 5.0])
 val res3 = evaluate test3
 
-val test4 = APP (test2, [test1, test1]
+val test4 = APP (test2, [test1, test1])
 val res4 = evaluate test4
 
 val test5 = SEQ [NUM 1.0, NUM 2.0, NUM 3.0]

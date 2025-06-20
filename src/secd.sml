@@ -1,5 +1,7 @@
 (* SECD machine (similar to Rational Reconstruction) *)
 
+load "Int";
+
 datatype term = NUM of int
               | VAR of string
               | LAM of string * term
@@ -19,6 +21,16 @@ fun lookup x ((x', v) :: e)
 datatype directive = T of term
                    | A
 
+fun stash_to_string nil
+  = ""
+  | stash_to_string (INT i :: s)
+  = (Int.toString i) ^ ", " ^ (stash_to_string s)
+
+fun control_to_string nil
+  = ""
+  | control_to_string (A :: c)
+  = "A, " ^ control_to_string c
+
 fun run                 (v :: nil) e'                   nil                 nil
   = v
   | run                 (v :: nil) e                    nil  ((s', e', c') :: d)
@@ -37,16 +49,6 @@ fun run                 (v :: nil) e'                   nil                 nil
   = run         (INT (n + 1) :: s) e                         c                d
   | run                         s  e                         c                d
   = raise Fail ("Unmatched case: stash: " ^ (stash_to_string s) ^ "; control:" ^ (control_to_string c)    )
-
-fun stash_to_string nil
-  = ""
-  | stash_to_string (INT i :: s)
-  = (Int.toString i) ^ ", " ^ (stash_to_string s)
-
-fun control_to_string nil
-  = ""
-  | control_to_string (A :: c)
-  = "A, " ^ control_to_string s
 
 val e_init = extend "succ" SUC empty
 
